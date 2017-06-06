@@ -36,6 +36,16 @@ class Foursquare extends OAuth2
     /**
      * @inheritdoc
      */
+    public function applyAccessTokenToRequest($request, $accessToken)
+    {
+        $data = $request->getData();
+        $data['oauth_token'] = $accessToken->getToken();
+        $request->setData($data);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function defaultName()
     {
         return 'foursquare';
