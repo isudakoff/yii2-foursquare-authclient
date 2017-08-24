@@ -26,6 +26,11 @@ class Foursquare extends OAuth2
     public $apiBaseUrl = 'https://api.foursquare.com/v2';
 
     /**
+     * @var string param is a date in php:date('Ymd') [YYYYMMDD] format
+     */
+    public $v;
+
+    /**
      * @inheritdoc
      */
     protected function initUserAttributes()
@@ -38,8 +43,11 @@ class Foursquare extends OAuth2
      */
     public function applyAccessTokenToRequest($request, $accessToken)
     {
+        $this->v = empty($this->v) ? date('Ymd') : $this->v;
+
         $data = $request->getData();
         $data['oauth_token'] = $accessToken->getToken();
+        $data['v'] = isset($data['v']) ? $data['v'] : $this->v;
         $request->setData($data);
     }
 
